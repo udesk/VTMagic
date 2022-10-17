@@ -43,7 +43,15 @@ blue:((float)(hexValue & 0xFF))/255.0 alpha:1.0]
 
 // 判断设备是否是iPhone
 #define kiPhoneDevice ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-#define KiPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+#define KiPhoneX ({ \
+BOOL ipX = NO; \
+if (@available(iOS 11.0, *)) { \
+    UIWindow *window = [[UIApplication sharedApplication].windows firstObject]; \
+    ipX = window.safeAreaInsets.bottom > 0; \
+} \
+  ipX; \
+})
+
 
 
 // tabbar高度
